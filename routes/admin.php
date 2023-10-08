@@ -41,7 +41,7 @@ use App\Http\Controllers\Backend\UserController;
 
 
 /*========================== Start Admin Route  ==========================*/
-Route::get('/',[AdminController::class, 'Index'])->name('login_form');
+Route::get('/admin',[AdminController::class, 'Index'])->name('login_form');
 Route::post('/admin',[AdminController::class, 'Login'])->name('admin.login');
 
 // Admin All Routes
