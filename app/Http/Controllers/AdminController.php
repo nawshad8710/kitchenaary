@@ -19,7 +19,6 @@ class AdminController extends Controller
 {
     /*=================== Start Index Login Methoed ===================*/
     public function Index(){
-
         if(Auth::check()){
             abort(404);
         }
@@ -39,14 +38,14 @@ class AdminController extends Controller
             ->where('status', 1)
             ->where('role', 3)
             ->first();
-        
+
         if(Auth::guard('admin')->user()->role == '2'){
             $productCount = DB::table('products')
                 ->select(DB::raw('count(*) as total_products'))
                 ->where('vendor_id', Auth::guard('admin')->user()->id)
                 ->where('status', 1)
                 ->first();
-                
+
             if($vendor){
                 $productCount = DB::table('products')
                     ->select(DB::raw('count(*) as total_products'))
@@ -79,14 +78,14 @@ class AdminController extends Controller
         $orderCount = DB::table('orders')
             ->select(DB::raw('count(*) as total_orders, sum(grand_total) as total_sell'))
             ->first();
-            
+
         $lowStockCount = DB::table('product_stocks as s')
             ->leftjoin('products as p', 's.product_id', '=', 'p.id')
             ->select(DB::raw('count(s.id) as total_low_stocks'))
             ->where('p.vendor_id', Auth::guard('admin')->user()->id)
             ->where('s.qty', '<=', 5)
             ->first();
-            
+
         if($vendor){
             $lowStockCount = DB::table('product_stocks as s')
                 ->leftjoin('products as p', 's.product_id', '=', 'p.id')
@@ -97,7 +96,7 @@ class AdminController extends Controller
         }
 
         //dd($userCount->total_users);
-    	
+
     	return view('admin.index', compact('userCount', 'productCount', 'categoryCount', 'brandCount', 'vendorCount', 'orderCount', 'lowStockCount'));
     } // end method
 
@@ -119,33 +118,33 @@ class AdminController extends Controller
                 return redirect()->route('admin.dashboard')->with('success','Admin Login Successfully.');
             }else{
                 $notification = array(
-                    'message' => 'Invaild Email Or Password.', 
+                    'message' => 'Invaild Email Or Password.',
                     'alert-type' => 'error'
                 );
                 return back()->with($notification);
             }
-    		
+
     	}else{
             $notification = array(
-                'message' => 'Invaild Email Or Password.', 
+                'message' => 'Invaild Email Or Password.',
                 'alert-type' => 'error'
             );
     		return back()->with($notification);
     	}
-    	
+
     } // end method
 
     /*=================== End Admin Login Methoed ===================*/
 
     /*=================== Start Logout Methoed ===================*/
     public function AminLogout(Request $request){
-        
+
     	Auth::guard('admin')->logout();
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
         $notification = array(
-            'message' => 'Admin Logout Successfully.', 
+            'message' => 'Admin Logout Successfully.',
             'alert-type' => 'success'
         );
     	return redirect()->route('login_form')->with($notification);
@@ -154,14 +153,14 @@ class AdminController extends Controller
 
     /*=================== Start AdminRegister Methoed ===================*/
     public function AdminRegister(){
-    	
+
     	return view('admin.admin_register');
     } // end method
     /*=================== End AdminRegister Methoed ===================*/
 
      /*=================== Start AdminForgotPassword Methoed ===================*/
     public function AdminForgotPassword(){
-        
+
         return view('admin.admin_forgot_password');
     } // end method
     /*=================== End AdminForgotPassword Methoed ===================*/
@@ -233,7 +232,7 @@ class AdminController extends Controller
 
         return view('admin.admin_change_password');
 
-    }// 
+    }//
 
     /* =============== Start UpdatePassword Method ================*/
     public function UpdatePassword(Request $request){

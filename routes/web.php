@@ -62,10 +62,10 @@ Route::get('/categories',[CategoryController::class, 'index'])->name('category_l
 
 /* =============== Product Search  ============= */
 Route::post('/product/search', [FrontendController::class, 'productSearch'])->name('product.search');
-/* =============== Advance Search ============= */ 
+/* =============== Advance Search ============= */
 Route::post('search-product', [FrontendController::class, 'advanceProduct']);
 
-/* =============== Hot Deals  ============= */ 
+/* =============== Hot Deals  ============= */
 Route::get('/hot-deals', [FrontendController::class, 'hotDeals'])->name('hot_deals.all');
 
 
@@ -123,7 +123,7 @@ Route::get('/district-upazilla/ajax/{district_id}',[CheckoutController::class,'g
 
 /* ============  All Product Show   ============= */
 Route::get('/product/shop',[ProductController::class,'index'])->name('product.show');
-/* =============== sort_by  ============= */ 
+/* =============== sort_by  ============= */
 Route::get('/search', [ProductController::class, 'sort_by'])->name('sort_by.search');
 // Attribute Data fetch
 Route::get('/attribute-data',[AttributeController::class,'index'])->name('attribute.index');

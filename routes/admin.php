@@ -81,7 +81,7 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 		Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
 		Route::post('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
 		Route::get('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
-		
+
 		Route::get('/category_active/{id}', [CategoryController::class, 'active'])->name('category.active');
 		Route::get('/category_inactive/{id}', [CategoryController::class, 'inactive'])->name('category.in_active');
 
@@ -132,7 +132,7 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 
 		Route::get('/product_featured/{id}', [ProductController::class, 'featured'])->name('product.featured');
 
-		// Add Attribute Add 
+		// Add Attribute Add
 		Route::post('/add-more-choice-option', [ProductController::class, 'add_more_choice_option'])->name('products.add-more-choice-option');
 
 		// ajax product page //
@@ -206,7 +206,7 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 	Route::post('/unit/update/{id}', [AttributeController::class, 'update_unit'])->name('unit.update');
 	Route::get('/unit/delete/{id}', [AttributeController::class, 'destroy_unit'])->name('unit.delete');
 	Route::get('/unit-status/{id}', [AttributeController::class, 'changeStatus'])->name('unit.changeStatus');
-	
+
 
 	// Setting All Route
 	Route::get('/settings/index', [SettingController::class, 'index'])->name('setting.index');
@@ -240,9 +240,9 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 		Route::get('/invoice/{id}', [OrderController::class, 'invoice_download'])->name('invoice.download');
 	});
 
-	// payment status 
+	// payment status
 	Route::post('/orders/update_payment_status', [OrderController::class, 'update_payment_status'])->name('orders.update_payment_status');
-	// delivery status 
+	// delivery status
 	Route::post('/orders/update_delivery_status', [OrderController::class, 'update_delivery_status'])->name('orders.update_delivery_status');
 
 	// Report All Route

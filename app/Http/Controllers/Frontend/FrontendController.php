@@ -26,11 +26,13 @@ class FrontendController extends Controller
 {
     /*=================== Start Index Methoed ===================*/
     public function index(Request $request)
-    {    
+    {
+
+        dd('ok');
 
         //Product All Status Active
         // $products = Product::where('status',1)->orderBy('id','DESC')->get();
-        
+
         $products = Product::where('status',1)->where('is_featured',1)->orderBy('id','DESC')->get();
 
         // Search Start
@@ -51,7 +53,7 @@ class FrontendController extends Controller
 
         // Category Featured all
         $featured_category = Category::orderBy('name_en','DESC')->where('is_featured','=',1)->where('status','=',1)->limit(15)->get();
-        
+
         //Slider
         $sliders = Slider::where('status',1)->orderBy('id','DESC')->limit(10)->get();
         // Product Top Selling
@@ -65,7 +67,7 @@ class FrontendController extends Controller
         // Home Banner
         $home_banners = Banner::where('status',1)->where('position',1)->orderBy('id','DESC')->get();
 
-        // Daily Best Sells 
+        // Daily Best Sells
         //dd(date('Y-m-d'));
         $todays_sale  = OrderDetail::where('created_at', 'like', '%'.date('Y-m-d').'%')->get();
         //$todays_sale  = DB::table('order_details')->select('*')->where('created_at', 'like', '%'.date('Y-m-d').'%')->get();
@@ -97,7 +99,7 @@ class FrontendController extends Controller
     } // end method
 
     public function index2(Request $request)
-    {    
+    {
 
         //Product All Status Active
         $products = Product::where('status',1)->orderBy('id','DESC')->get();
@@ -120,7 +122,7 @@ class FrontendController extends Controller
 
         // Category Featured all
         $featured_category = Category::orderBy('name_en','DESC')->where('is_featured','=',1)->where('status','=',1)->limit(15)->get();
-        
+
         //Slider
         $sliders = Slider::where('status',1)->orderBy('id','DESC')->limit(10)->get();
         // Product Top Selling
@@ -134,7 +136,7 @@ class FrontendController extends Controller
         // Home Banner
         $home_banners = Banner::where('status',1)->where('position',1)->orderBy('id','DESC')->get();
 
-        // Daily Best Sells 
+        // Daily Best Sells
         //dd(date('Y-m-d'));
         $todays_sale  = OrderDetail::where('created_at', 'like', '%'.date('Y-m-d').'%')->get();
         // dd($todays_sale);
@@ -155,25 +157,25 @@ class FrontendController extends Controller
             if($product->id){
                 $multiImg = MultiImg::where('product_id',$product->id)->get();
             }
-    
+
             /* ================= Product Color Eng ================== */
             $color_en = $product->product_color_en;
             $product_color_en = explode(',', $color_en);
-    
+
             /* ================= Product Size Eng =================== */
             $size_en = $product->product_size_en;
             $product_size_en = explode(',', $size_en);
-    
+
             /* ================= Realted Product =============== */
             $cat_id = $product->category_id;
             $relatedProduct = Product::where('category_id',$cat_id)->where('id','!=',$product->id)->orderBy('id','DESC')->get();
-    
+
             $categories = Category::orderBy('name_en','ASC')->where('status','=',1)->limit(5)->get();
             $new_products = Product::orderBy('name_en')->where('status','=',1)->limit(3)->latest()->get();
-            
+
             return view('frontend.product.product_details', compact('product','multiImg','categories','new_products','product_color_en','product_size_en','relatedProduct'));
         }
-        
+
         return view('frontend.product.productNotFound');
     }
 
@@ -197,7 +199,7 @@ class FrontendController extends Controller
         }
 
         $products_sort_by = Product::where($conditions);
-        
+
         switch ($sort_by) {
             case 'newest':
                 $products_sort_by->orderBy('created_at', 'desc')->paginate(10);
@@ -235,12 +237,12 @@ class FrontendController extends Controller
         $category_ids = CategoryUtility::children_ids($category->id);
         $category_ids[] = $category->id;
         $products->whereIn('category_id', $category_ids);
-        
+
         $products = $products->orderBy('created_at', 'desc')->paginate(12);
 
         $categories = Category::orderBy('name_en','ASC')->where('status','=',1)->get();
         // dd($products);
-        $subcategories = Category::orderBy('name_en','ASC')->where('status',1)->where('parent_id',$category->id)->get();  
+        $subcategories = Category::orderBy('name_en','ASC')->where('status',1)->where('parent_id',$category->id)->get();
 
         return view('frontend.product.category_view',compact('products','categories','category','sort_by','brand_id','subcategories'));
     } // end method
@@ -251,10 +253,10 @@ class FrontendController extends Controller
 
         $vendor = Vendor::where('slug', $slug)->first();
         // dd($category);
-        
+
         $products = Product::where('status', 1)->where('vendor_id',$vendor->id)->orderBy('id','DESC')->paginate(20);
         // Price Filter
-        if ($request->get('filter_price_start')!== Null && $request->get('filter_price_end')!== Null ){ 
+        if ($request->get('filter_price_start')!== Null && $request->get('filter_price_end')!== Null ){
             $filter_price_start = $request->get('filter_price_start');
             $filter_price_end = $request->get('filter_price_end');
 
@@ -265,7 +267,7 @@ class FrontendController extends Controller
 
         }
 
-        $categories = Category::orderBy('name_en','ASC')->where('status','=',1)->get();      
+        $categories = Category::orderBy('name_en','ASC')->where('status','=',1)->get();
         // dd($products);
 
         return view('frontend.product.vendor_view',compact('products','categories','vendor'));
@@ -301,7 +303,7 @@ class FrontendController extends Controller
             $attr->values = $attribute_value->values;
             $attributes->add($attr);
         }
-    
+
 
         return response()->json(array(
             'product' => $product,
@@ -333,7 +335,7 @@ class FrontendController extends Controller
         }
 
         $products_sort_by = Product::where($conditions);
-        
+
         switch ($sort_by) {
             case 'newest':
                 $products_sort_by->orderBy('created_at', 'desc')->paginate(10);
@@ -370,7 +372,7 @@ class FrontendController extends Controller
 
         return view('frontend.product.search',compact('products','categories','attributes','sort_by','brand_id'));
 
-    } // end method 
+    } // end method
 
     /* ================= End Product Search =================== */
 
@@ -400,7 +402,7 @@ class FrontendController extends Controller
 
         return view('frontend.product.advance_search',compact('products','categories','attributes'));
 
-    } // end method 
+    } // end method
 
     /* ================= End Advance Product Search =================== */
 
@@ -420,7 +422,7 @@ class FrontendController extends Controller
         }
 
         $products_sort_by = Product::where($conditions);
-        
+
         switch ($sort_by) {
             case 'newest':
                 $products_sort_by->orderBy('created_at', 'desc')->paginate(10);
@@ -462,5 +464,5 @@ class FrontendController extends Controller
         // End Shop Product //
         return view('frontend.deals.hot_deals',compact('attributes','products','sort_by','brand_id'));
 
-    } // end method 
-} 
+    } // end method
+}
